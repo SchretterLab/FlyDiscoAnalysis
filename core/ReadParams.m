@@ -1,4 +1,7 @@
-function params = ReadParams(filename)
+function params = ReadParams(filename, varargin)
+
+dowarn = myparse(varargin, ...
+                 'dowarn', true) ;
 
 params = struct() ;
 fid = fopen(filename, 'r') ;
@@ -47,10 +50,12 @@ while true,
     end
     params.(name) = val;
   catch ME,
-    warning('Unable to parse parameter line\n%s\nof %s:\n%s\n', ...
-            s, ...
-            filename, ...
-            getReport(ME)) ;
+    if dowarn ,
+      warning('Unable to parse parameter line\n%s\nof %s:\n%s\n', ...
+              s, ...
+              filename, ...
+              getReport(ME)) ;
+    end
     continue;
   end
 

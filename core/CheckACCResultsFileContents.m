@@ -6,7 +6,7 @@ function do_continue_pipeline = CheckACCResultsFileContents(expdir, dataloc_para
         do_continue_pipeline = false ;
         return
     end
-    acc_results = ReadParams(acc_results_as_text_file_path) ;
+    acc_results = ReadParams(acc_results_as_text_file_path, 'dowarn', false) ;
     if isfield(acc_results, 'automated_pf') ,
         if strcmp(acc_results.automated_pf, 'P'),
             do_continue_pipeline = true ;
