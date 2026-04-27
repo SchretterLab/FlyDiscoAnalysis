@@ -44,7 +44,10 @@ end
 % class objects are still silently ignored, even when "dbstop if error"
 % is engaged.  ALT, 2021-03-04
 try
-  JAABADetect(expdir, 'jabfiles', jabfiles, 'forcecompute', forcecompute, 'fastcomputepffs', fastcomputepffs) ;
+  for i = 1 : numel(jabfiles)
+    jabFileName = jabfiles{i} ;
+    JAABADetect(expdir, 'jabfiles', {jabFileName}, 'forcecompute', forcecompute, 'fastcomputepffs', fastcomputepffs) ;
+  end
 catch me ,
   rethrow(me) ;
 end
