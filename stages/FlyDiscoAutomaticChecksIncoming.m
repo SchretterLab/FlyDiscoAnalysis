@@ -35,10 +35,8 @@ function FlyDiscoAutomaticChecksIncoming(expdir, varargin)
   
   try
     paramsfile = fullfile(settingsdir,analysis_protocol,dataloc_params.automaticchecksincomingparamsfilestr);
-    check_params = ReadParams(paramsfile);
-    if ~iscell(check_params.control_line_names),
-      check_params.control_line_names = {check_params.control_line_names};
-    end
+    raw_check_params = ReadParams(paramsfile);
+    check_params = modernizeAutomaticChecksIncomingParams(raw_check_params) ;
     metadatafile = fullfile(expdir,dataloc_params.metadatafilestr);
     moviefile = fullfile(expdir,dataloc_params.moviefilestr);
     protocolfile = fullfile(expdir,dataloc_params.ledprotocolfilestr);
@@ -122,16 +120,20 @@ function FlyDiscoAutomaticChecksIncoming(expdir, varargin)
     
     %% check for dead or damaged flies
     
-    if isfield(metadata,'num_flies_damaged') && metadata.num_flies_damaged > 0,
-      do_continue_pipeline = false;
-      msgs{end+1} = 'Damaged flies > 0.';
-      iserror(category2idx.flag_flies_dead_or_damaged) = true;
+    if isfield(metadata,'num_flies_damaged')
+      if metadata.num_flies_damaged > check_params.max_num_flies_damaged
+        do_continue_pipeline = false;
+        msgs{end+1} = 'Damaged flies > max_num_flies_damaged.';
+        iserror(category2idx.flag_flies_dead_or_damaged) = true;
+      end
     end
     
-    if isfield(metadata,'num_flies_dead') && metadata.num_flies_dead > 0,
-      do_continue_pipeline = false;
-      msgs{end+1} = 'Dead flies > 0.';
-      iserror(category2idx.flag_flies_dead_or_damaged) = true;
+    if isfield(metadata,'num_flies_dead') 
+      if metadata.num_flies_dead > check_params.max_num_flies_dead
+        do_continue_pipeline = false;
+        msgs{end+1} = 'Dead flies > max_num_flies_dead.';
+        iserror(category2idx.flag_flies_dead_or_damaged) = true;
+      end
     end
     
     %% check loading time
