@@ -1,0 +1,8 @@
+lbl_file,/Users/50358419/Library/CloudStorage/Box-Box/Schretter Lab/APTfiles/20220826_Grone_60K_aligned_nslots.lbl
+model_ndx,1
+bindpaths,/groups,/nrs
+singularityimg,/Users/50358419/Library/CloudStorage/Box-Box/Schretter Lab/APTfiles/apt_20230427_tf211_pytorch113_ampere.sif
+gpuqueue,gpu_rtx
+dobsub,true
+maxwaittime,28800
+maxupdatetime,28800
